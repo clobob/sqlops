@@ -1,10 +1,12 @@
 <?php
-    $mysql_server_name='192.168.199.199'; 
-    $mysql_username='admin'; 
-    $mysql_password='123456'; 
-    $mysql_database='sql_db';
-  $conn=mysqli_connect($mysql_server_name,$mysql_username,$mysql_password,$mysql_database,"3306") or die("error connecting") ;
-  mysqli_query($conn,"set names 'utf8'"); 
+#    $mysql_server_name='192.168.199.199'; 
+#    $mysql_username='admin'; 
+#    $mysql_password='123456'; 
+#    $mysql_database='sql_db';
+#  $conn=mysqli_connect($mysql_server_name,$mysql_username,$mysql_password,$mysql_database,"3306") or die("error connecting") ;
+#  mysqli_query($conn,"set names 'utf8'"); 
+
+  include('../php_scripts/conn.php');
   $result = mysqli_query($conn,"select ops_db,count(*) as count from sql_order_wait group by ops_db");
   $data="";
   $array= array();
@@ -19,6 +21,6 @@
     $array[]=$user;
   }
   $data=json_encode($array);
-  // echo "{".'"user"'.":".$data."}";
+#  echo "{".'"user"'.":".$data."}";
   echo $data;
 ?>
