@@ -3,7 +3,7 @@
   $remote_user="root";   
   $remote_password="1233211234567";   
   $connection = ssh2_connect($remote_host,22);  
-  $script='/usr/bin/sqladvisor -h '.$ip.' -u '.$user.' -p '.$pwd.' -P '.$port.' -d '.$db.' -q "'.$multi_sql[$x].'"'.' -v 1'; 
+  $script='/usr/bin/sqladvisor -h '.$ip.' -u '.$user.' -p '.$pwd.' -P '.$port.' -d '.$db.' -q "'.str_replace('"','\"',$multi_sql[$x]).'"'.' -v 1'; 
   ssh2_auth_password($connection,$remote_user,$remote_password);
   $stream = ssh2_exec($connection,$script);
   $errorStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
