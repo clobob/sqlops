@@ -57,6 +57,7 @@ function deleteFile(){
 
 }
 
+/**
 $fileoperator = new fileOperator();
 
 $uploaded = $fileoperator->uploadProcedureFile("file");
@@ -78,5 +79,5 @@ echo "<br> upload failure. <br>";
 }
 
 echo "<form action=\"../procedure_review.html\" method=\"get\"> <input type='submit' name='submit' value='返回'></form>";
-
+*/
 ?>
