@@ -35,7 +35,11 @@ foreach ($allProceduresArray as $procedure) {
 }
 
 echo "<br> the first procedure is : <br>";
-print_r($procedureArray[0]->obtainSqls($procedureArray[0]->procedureCode[2]));
+$sqls = $procedureArray[0]->obtainSqls($procedureArray[0]->procedureCode[2]);
+foreach ($sqls as $sql){
+
+echo $sql.";<br>";
+}
 
 
 # 分析SQL

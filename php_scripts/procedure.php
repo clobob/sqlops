@@ -104,7 +104,16 @@ class mysqlProcedure {
 			#不能执行,callback函数调用问题
 			array_walk($realSqls,array($this,"my_trim"));
 		}
-		return array_filter($realSqls);
+		$onlySqls = array();
+		foreach ($realSqls as $sql){
+		#	echo $sql;
+			foreach ($this->mysqlKeyWords as $sqlKey){
+#echo $sqlKey;
+				if(preg_match_all("/".$sqlKey."/",strtoupper($sql))){array_push($onlySqls,$sql);continue;}
+			}
+		}
+		#return array_filter($realSqls);
+		return $onlySqls;
 	}
 	#自定义方法 去除字符串两端空格
 	function my_trim(&$item) {
