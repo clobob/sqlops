@@ -133,12 +133,13 @@ class sqlRulesClass{
 
 	// update 语句审核规则
 	function updateRules($update_sql){
+		echo "当前SQL语句是：".$update_sql." <br>";
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$update_sql)));
 		$up=0;
 		if(preg_match('/update([^~]*)where/i',$update_sql)!= 1){
 			echo '<big><font color="#FF0000">警告！没有where条件，update会全表更新，禁止执行！！！</font></big></br>';
-			exit;
+			return;
 		}
 		$con1=mysqli_connect($ip,$user,$pwd,$db,$port);
 		$result = mysqli_query($con1,"explain  ".$update_sql);
@@ -185,7 +186,7 @@ class sqlRulesClass{
 		//array_push($dml_parm,$parmArr[0]);
 		if(!in_array('where',$parmArr)){
 			echo '<big><font color="#FF0000">警告！没有where条件，delete会全表更新，禁止执行！！！</font></big></br>';
-			exit;
+			return;
 		}
 		$con3=mysqli_connect($ip,$user,$pwd,$db,$port);
 		$result = mysqli_query($con3,"explain  ".$delete_sql);
@@ -198,7 +199,7 @@ class sqlRulesClass{
 			else{
 				echo '<big><font color="#FF0000">'.$parmArr[2].'表 where条件字段，扫描影响的行数是：'.$record_rows.' 行，超过50000行请联系DBA执行!!!</font></big></br>';
 				$del++;
-				exit;
+				return;
 			}
 		}
 		mysqli_close($con3);
@@ -308,15 +309,15 @@ class sqlRulesClass{
 		##########################################
 		if(!in_array('create_time',$parmArr)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表缺少create_time字段，方便抽数据使用，且给加上索引。</font></big></br>";
-			exit;
+			return;
 		}
 		if(!preg_match_all("/create_time\s*timestamp.*|create_time\s*datetime.*/",$parm,$out)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表create_time字段类型应设置timestamp。</font></big></br>";
-			exit;
+			return;
 		}
 		if(!preg_grep('/\(*create_time.*\),?/',$parmArr)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表create_time字段缺少索引。</font></big></br>";
-			exit;
+			return;
 		}
 		##########################################
 
@@ -344,21 +345,21 @@ class sqlRulesClass{
 		if(in_array('foreign',$parmArr)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表避免使用外键，外键会导致父表和子表之间耦合，十分影响SQL性能，出现过多的锁等待，甚
 			至会造成死锁。</font></big></br>";
-			exit;
+			return;
 		}
 		if(preg_match("/timestamp\([0-9]+\)/",$parm)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表字段类型应设置为timestamp精确到秒。例：将timestamp(3)改成timestamp。</font></big></br>";
-			exit;
+			return;
 		}
 		if(preg_match("/datetime\([0-9]+\)/",$parm)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表字段类型应设置为datetime精确到秒。例：将datetime(3)改成datetime。</font></big></br>";
-			exit;
+			return;
 		}
 		if(in_array('comment',$parmArr)){
 			$count_column = array_count_values($parmArr);
 			if($count_column['comment']>=200){
 				echo "<big><font color=\"#FF0000\">警告！表中的字段超过200个。请检查是否符合建表三范式准则！</font></big></br>";
-				exit;
+				return;
 			}
 		}
 
@@ -380,21 +381,21 @@ class sqlRulesClass{
 				echo $parmArr[2]."表记录小于150万行，可以由开发自助执行。</br>";
 			}else{
 				echo '<big><font color="#FF0000">'.$parmArr[2].'表记录是：'.$record_rows.' 行，表太大请联系DBA执行!!!</font></big></br>';
-				exit;
+				return;
 			}  
 		}
 		mysqli_close($con2);
 		if(in_array('drop',$parmArr)){
 			if(!preg_match('/drop.*index/i',$multi_sql[$x])){
 				echo "<big><font color=\"#FF0000\">警告！你要对$parmArr[2]表删除字段，数据会存在丢失的风险，请走审批！！！</font></big></br>";
-				exit;
+				return;
 			}
 		}
 		if($at==0){
 			echo 'alter语句未发现问题</br>';
 			//$c_alter=1;
 		}else{
-			exit;
+			return;
 		}
 	}
 	
