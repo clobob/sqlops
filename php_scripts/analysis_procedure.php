@@ -34,13 +34,16 @@ foreach ($allProceduresArray as $procedure) {
     array_push($procedureArray,new mysqlProcedure($procedure));
 }
 
-echo "<br> the first procedure is : <br>";
-$sqls = $procedureArray[0]->obtainSqls($procedureArray[0]->procedureCode[2]);
+$item = 1;
+foreach ($procedureArray as $procedure){
+echo "<br> The ".$item." procedure is : <br>";
+$sqls = $procedure->obtainSqls($procedure->procedureCode[2]);
 foreach ($sqls as $sql){
 
 echo $sql.";<br>";
 }
-
+$item++;
+}
 
 # 分析SQL
 
@@ -51,7 +54,11 @@ echo $sql.";<br>";
 # 删除文件
 
 
+$deleted = $fileoperator->deleteFile();
 
+if($deleted){
+echo "<br> 文件已移除<br>";
+}
 
 
 
