@@ -188,7 +188,7 @@ class sqlRulesClass{
 			exit;
 		}
 		$con3=mysqli_connect($ip,$user,$pwd,$db,$port);
-		$result = mysqli_query($con3,"explain  ".$delete_sql;
+		$result = mysqli_query($con3,"explain  ".$delete_sql);
 		while($row = mysqli_fetch_array($result)){
 			$record_rows=$row[8];
 			if($record_rows<=50000){
