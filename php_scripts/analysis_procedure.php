@@ -6,7 +6,7 @@ require "procedure.php";
 *
 *
 **/
-
+$dbname=$_POST['dbname'];
 # 上传文件
 $fileoperator = new fileOperator();
 
@@ -46,7 +46,7 @@ $item++;
 **/
 # 分析SQL
 require 'sqlRulesClass.php';
-$sqlRulesObj = new sqlRulesClass();
+$sqlRulesObj = new sqlRulesClass($dbname);
 
 $item = 1;
 foreach ($procedureArray as $procedure){

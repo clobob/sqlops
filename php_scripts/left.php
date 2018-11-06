@@ -46,7 +46,7 @@
                                 </dd>
                                 <dd>
                                         <image class="coin11" src="../image/coin111.png" /><image class="coin22"
-                                                src="../image/coin222.png" /><a class="cks" href="../procedure_review.html"
+                                                src="../image/coin222.png" /><a class="cks" href="../procedure_review.php"
                                                 target="main">分析存储过程</a><image class="icon5" src="../image/coin21.png" />
                                 </dd>
 			</dl>

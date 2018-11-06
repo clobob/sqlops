@@ -4,6 +4,10 @@
 **/
 
 class sqlRulesClass{
+	var $dbname;
+	function __construct($dbname){
+		$this->dbname = $dbname;
+	}
 	//select 语句审核规则
 	function selectRules($select_sql){
 		$s=0;
@@ -120,7 +124,7 @@ class sqlRulesClass{
 	}
 	// insert 语句审核规则
 	function insertRules($insert_sql){
-		
+		$is = 0;
 		if(preg_match('/insert.*select/i',$insert_sql)){
 			echo "<big><font color=\"#FF0000\">警告: insert 表1 select 表2，会造成锁表。</font></big></br>";
 	//		$is++;
@@ -134,6 +138,7 @@ class sqlRulesClass{
 	// update 语句审核规则
 	function updateRules($update_sql){
 		echo "当前SQL语句是：".$update_sql." <br>";
+		$dbname = $this->dbname;
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$update_sql)));
 		$up=0;
@@ -179,6 +184,7 @@ class sqlRulesClass{
 	}
 	
 	function deleteRules($delete_sql){
+		$dbname = $this->dbname;
 		require 'db_config.php';
 		$del=0;
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$delete_sql)));
@@ -370,6 +376,7 @@ class sqlRulesClass{
 	}
 	
 	function alterRules($alter_sql){
+		$dbname = $this->dbname;
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$alter_sql)));
 		$con2=mysqli_connect($ip,$user,$pwd,$db,$port); 
