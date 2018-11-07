@@ -124,14 +124,15 @@ class sqlRulesClass{
 	}
 	// insert 语句审核规则
 	function insertRules($insert_sql){
+		echo "当前SQL语句是：".$insert_sql." <br>";
 		$is = 0;
 		if(preg_match('/insert.*select/i',$insert_sql)){
 			echo "<big><font color=\"#FF0000\">警告: insert 表1 select 表2，会造成锁表。</font></big></br>";
-	//		$is++;
+			$is++;
 		}
 		if($is==0){
 			echo 'insert语句未发现问题</br>';
-			$c_insert=1;
+			//$c_insert=1;
 		}
 	}
 
@@ -184,6 +185,7 @@ class sqlRulesClass{
 	}
 	
 	function deleteRules($delete_sql){
+		echo "当前SQL语句是：".$delete_sql." <br>";
 		$dbname = $this->dbname;
 		require 'db_config.php';
 		$del=0;
@@ -233,6 +235,7 @@ class sqlRulesClass{
 	}
 	
 	function createRules($create_sql){
+		echo "当前SQL语句是：".$create_sql." <br>";
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$create_sql)));
 		if(preg_match('/create\s*index/',$create_sql)){
 			echo "<big><font color=\"#FF0000\">警告！不支持create index语法，请更改为alter table add index语法。</font></big></br>";
@@ -376,6 +379,7 @@ class sqlRulesClass{
 	}
 	
 	function alterRules($alter_sql){
+		echo "当前SQL语句是：".$alter_sql." <br>";
 		$dbname = $this->dbname;
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$alter_sql)));
