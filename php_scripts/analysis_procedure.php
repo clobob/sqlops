@@ -68,7 +68,7 @@ foreach ($procedureArray as $procedure){
 			continue;
 		}
 		#if((stripos ($sql,'update')>=0)||(stripos($sql,'replace')>=0)||preg_match('/(\/\*[^~]*\*\/)[\s]*[(update)|(replace)]/i',$sql)){
-		if(preg_match('/(\/\*[^~]*\*\/)[\s]*[(update)|(replace)]/i',$sql)){
+		if(preg_match('/(\/\*[^~]*\*\/)?[\s]*[(update)|(replace)]/i',$sql)){
 			$sqlRulesObj->updateRules($sql);
 			$sql_number++;
 			continue;
