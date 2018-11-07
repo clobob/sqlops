@@ -67,7 +67,7 @@ foreach ($procedureArray as $procedure){
 			$sql_number++;
 			continue;
 		}
-		if(stripos ($sql,'update')===0){
+		if((stripos ($sql,'update')===0)||(stripos($sql,'replace')===0)){
 			$sqlRulesObj->updateRules($sql);
 			$sql_number++;
 			continue;
