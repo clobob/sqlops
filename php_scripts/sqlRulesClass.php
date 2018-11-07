@@ -142,8 +142,8 @@ class sqlRulesClass{
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$update_sql)));
 		$up=0;
-		if(preg_match('/update([^~]*)where/i',$update_sql)!= 1){
-			echo '<big><font color="#FF0000">警告！没有where条件，update会全表更新，禁止执行！！！</font></big></br>';
+		if(preg_match('/[(update)|(replace)]([^~]*)where/i',$update_sql)!= 1){
+			echo '<big><font color="#FF0000">警告！没有where条件，update/replace 会全表更新，禁止执行！！！</font></big></br>';
 			return;
 		}
 		$con1=mysqli_connect($ip,$user,$pwd,$db,$port);
