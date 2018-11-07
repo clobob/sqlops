@@ -62,27 +62,28 @@ foreach ($procedureArray as $procedure){
 			$sql_number++;
 			continue;
 		}
-		if(stripos ($sql,'insert')>=0){
+		if(stripos ($sql,'insert')===0){
 			$sqlRulesObj->insertRules($sql);
 			$sql_number++;
 			continue;
 		}
-		if((stripos ($sql,'update')>=0)||(stripos($sql,'replace')>=0)){
+		#if((stripos ($sql,'update')>=0)||(stripos($sql,'replace')>=0)||preg_match('/(\/\*[^~]*\*\/)[\s]*[(update)|(replace)]/i',$sql)){
+		if(preg_match('/(\/\*[^~]*\*\/)[\s]*[(update)|(replace)]/i',$sql)){
 			$sqlRulesObj->updateRules($sql);
 			$sql_number++;
 			continue;
 		}
-		if(stripos ($sql,'alter')>=0){
+		if(stripos ($sql,'alter')===0){
 			$sqlRulesObj->alterRules($sql);
 			$sql_number++;
 			continue;
 		}
-		if(stripos ($sql,'delete')>=0){
+		if(stripos ($sql,'delete')===0){
 			$sqlRulesObj->deleteRules($sql);
 			$sql_number++;
 			continue;
 		}
-		if(stripos ($sql,'create')>=0){
+		if(stripos ($sql,'create')===0){
 			$sqlRulesObj->createRules($sql);
 			$sql_number++;
 			continue;
