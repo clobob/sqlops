@@ -79,7 +79,7 @@ foreach ($procedureArray as $procedure){
 			continue;
 		}
 		#if(stripos ($sql,'delete')===0){
-		if(preg_match('/(\/\*[^~]*\*\/)?[\s]*update/i',$sql)){
+		if(preg_match('/(\/\*[^~]*\*\/)?[\s]*delete/i',$sql)){
 			$sqlRulesObj->deleteRules($sql);
 			$sql_number++;
 			continue;
