@@ -83,7 +83,8 @@ foreach ($procedureArray as $procedure){
 			$sql_number++;
 			continue;
 		}
-		if(stripos ($sql,'create')===0){
+		#if(stripos ($sql,'create')===0){
+		if(preg_match('/(\/\*[^~]*\*\/)?[\s]*create/i',$sql){
 			$sqlRulesObj->createRules($sql);
 			$sql_number++;
 			continue;
