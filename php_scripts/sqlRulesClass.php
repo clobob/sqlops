@@ -32,7 +32,7 @@ class sqlRulesClass{
 		}
 		if(in_array("in",$parmArr)){
 			$countIn = array_count_values($parmArr);
-			if(preg_match_all('/\(.*\)/',$parm,$out)){
+			if(preg_match_all('/\(.*\)/',$select_sql,$out)){
 				echo "提示：in里面的数值不要超过1000个</br>";
 					$s++;
 			}
@@ -58,7 +58,7 @@ class sqlRulesClass{
 			}
 		}
 		if(in_array("like",$parmArr)){
-			if(preg_match_all("/'%(.)*%'/",$parm,$out)){
+			if(preg_match_all("/'%(.)*%'/",$select_sql,$out)){
 				 echo "<big><font color=\"#FF0000\">警告！like '%%'双百分号无法用到索引，like 'mysql%'这样是可以利用到索引的</font></big></br>";
 				 $s++;
 			}
@@ -74,7 +74,7 @@ class sqlRulesClass{
 			}
 		}
 		if(in_array('order',$parmArr)){
-			 if(preg_match_all("/by.*rand().*/",$parm,$out)){
+			 if(preg_match_all("/by.*rand().*/",$select_sql,$out)){
 				  echo '<big><font color="#FF0000">警告！MySQL里用到order by rand()在数据量比较多的时候是很慢的，因为会导致MySQL全表扫描，故也不会用到索引</font></big></br>';
 				  $s++;
 			 }
@@ -85,18 +85,18 @@ class sqlRulesClass{
 				  }
 			 }*/
 			 if(!in_array('group',$parmArr)){
-				  if(preg_match_all("/count(.*)/",$parm,$out)){
+				  if(preg_match_all("/count(.*)/",$select_sql,$out)){
 						echo '<big><font color="#FF0000">警告！禁止不必要的order by排序,因为前面已经count统计了</font></big></br>';
 						$s++;
 				  }
 			 }
 		}
 		if(in_array('where',$parmArr)){
-			 if(preg_match_all("/\(.*\)\s{0,}(>|<|=)/",$parm,$out)){
+			 if(preg_match_all("/\(.*\)\s{0,}(>|<|=)/",$select_sql,$out)){
 				echo "<big><font color=\"#FF0000\">警告！MySQL里不支持函数索引，例DATE_FORMAT('create_time','%Y-%m-%d')='2016-01-01'是无法用到索引的，需要改写为create_time>='2016-01-01 00:00:00' and create_time<='2016-01-01 23:59:59'</font></big></br>";
 				 $s++;
 			 }
-			 if(preg_match_all("/\(.*\)\s{0,}(>|<|=|between)/",$parm,$out)){
+			 if(preg_match_all("/\(.*\)\s{0,}(>|<|=|between)/",$select_sql,$out)){
 				 echo "<big><font color=\"#FF0000\">警告！MySQL里不支持函数索引，例DATE_FORMAT('create_time','%Y-%m-%d')='2016-01-01'是无法用到索引的，需要改写为create_time>='2016-01-01 00:00:00' and create_time<='2016-01-01 23:59:59'</font></big></br>";
 				 $s++;
 			 }
@@ -284,11 +284,11 @@ class sqlRulesClass{
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表字段没有中文注释，COMMENT应该有默认值，如COMMENT '姓名'</font></big></br>";
 			//$c++;
 		}
-		if(!preg_match_all("/comment=.*/",$parm,$out)){
+		if(!preg_match_all("/comment=.*/",$create_sql,$out)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表没有中文注释，例：COMMENT='新版授信项表'</font></big></br>";
 			//$c++;
 		}
-		if(!preg_match_all("/.*utf8.*/",$parm,$out)){
+		if(!preg_match_all("/.*utf8.*/",$create_sql,$out)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表缺少utf8字符集，否则会出现乱码</font></big></br>";
 			//$c++;
 		}
@@ -300,7 +300,7 @@ class sqlRulesClass{
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表缺少update_time字段，方便抽数据使用，且给加上索引。</font></big></br>";
 			//$c++;
 		}
-		if(!preg_match_all("/update_time\s*timestamp.*|update_time\s*datetime.*/",$parm,$out)){
+		if(!preg_match_all("/update_time\s*timestamp.*|update_time\s*datetime.*/",$create_sql,$out)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表update_time字段类型应设置timestamp。</font></big></br>";
 			//$c++;
 		}
@@ -320,7 +320,7 @@ class sqlRulesClass{
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表缺少create_time字段，方便抽数据使用，且给加上索引。</font></big></br>";
 			return;
 		}
-		if(!preg_match_all("/create_time\s*timestamp.*|create_time\s*datetime.*/",$parm,$out)){
+		if(!preg_match_all("/create_time\s*timestamp.*|create_time\s*datetime.*/",$create_sql,$out)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表create_time字段类型应设置timestamp。</font></big></br>";
 			return;
 		}
