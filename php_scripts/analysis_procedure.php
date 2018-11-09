@@ -78,14 +78,12 @@ foreach ($procedureArray as $procedure){
 			$sql_number++;
 			continue;
 		}
-		#if(stripos ($sql,'delete')===0){
-		if(preg_match('/(\/\*[^~]*\*\/)?[\s]*delete/i',$sql){
+		if(stripos ($sql,'delete')===0){
 			$sqlRulesObj->deleteRules($sql);
 			$sql_number++;
 			continue;
 		}
-		#if(stripos ($sql,'create')===0){
-		if(preg_match('/(\/\*[^~]*\*\/)?[\s]*create/i',$sql){
+		if(stripos ($sql,'create')===0){
 			$sqlRulesObj->createRules($sql);
 			$sql_number++;
 			continue;
