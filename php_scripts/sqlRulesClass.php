@@ -236,7 +236,7 @@ class sqlRulesClass{
 	
 	function createRules($create_sql){
 		echo "当前SQL语句是：".$create_sql." <br>";
-		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$create_sql)));
+		$parmArr = preg_split("/[\s]+/",strtolower(ltrim(str_replace("\r\n","  ",$create_sql))));
 		if(preg_match('/create\s*index/',$create_sql)){
 			echo "<big><font color=\"#FF0000\">警告！不支持create index语法，请更改为alter table add index语法。</font></big></br>";
 			break;
@@ -284,7 +284,7 @@ class sqlRulesClass{
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表字段没有中文注释，COMMENT应该有默认值，如COMMENT '姓名'</font></big></br>";
 			//$c++;
 		}
-		if(!preg_match_all("/comment=.*/",$create_sql,$out)){
+		if(!preg_match_all("/comment=.*/i",$create_sql,$out)){
 			echo "<big><font color=\"#FF0000\">警告！$parmArr[2]表没有中文注释，例：COMMENT='新版授信项表'</font></big></br>";
 			//$c++;
 		}
