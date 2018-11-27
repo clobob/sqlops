@@ -109,7 +109,7 @@ class mysqlProcedure {
 		#	echo $sql;
 			foreach ($this->mysqlKeyWords as $sqlKey){
 #echo $sqlKey;
-				if(preg_match_all("/".$sqlKey."/",strtoupper($sql))){array_push($onlySqls,$sql);continue;}
+				if(preg_match_all("/".$sqlKey."/",strtoupper($sql))){array_push($onlySqls,$sql);break;}
 			}
 		}
 		#return array_filter($realSqls);
