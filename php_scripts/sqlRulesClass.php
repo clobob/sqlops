@@ -11,7 +11,7 @@ class sqlRulesClass{
 	//select 语句审核规则
 	function selectRules($select_sql){
 		$s=0;
-		echo "当前SQL语句是：<br>".$select_sql."<br>";
+		$this->showCurrentSql($select_sql);
 	//	array_push($dml_parm,$parmArr[0]);
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$select_sql)));
 		if(in_array('*',$parmArr)){
@@ -124,7 +124,7 @@ class sqlRulesClass{
 	}
 	// insert 语句审核规则
 	function insertRules($insert_sql){
-		echo "当前SQL语句是：".$insert_sql." <br>";
+		$this->showCurrentSql($insert_sql);
 		$is = 0;
 		if(preg_match('/insert.*select/i',$insert_sql)){
 			echo "<big><font color=\"#FF0000\">警告: insert 表1 select 表2，会造成锁表。</font></big></br>";
@@ -138,7 +138,7 @@ class sqlRulesClass{
 
 	// update 语句审核规则
 	function updateRules($update_sql){
-		echo "当前SQL语句是：".$update_sql." <br>";
+		$this->showCurrentSql($update_sql);
 		$dbname = $this->dbname;
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$update_sql)));
@@ -185,7 +185,7 @@ class sqlRulesClass{
 	}
 	
 	function deleteRules($delete_sql){
-		echo "当前SQL语句是：".$delete_sql." <br>";
+		$this->showCurrentSql($delete_sql);
 		$dbname = $this->dbname;
 		require 'db_config.php';
 		$del=0;
@@ -235,7 +235,7 @@ class sqlRulesClass{
 	}
 	
 	function createRules($create_sql){
-		echo "当前SQL语句是：".$create_sql." <br>";
+		$this->showCurrentSql($create_sql);
 		$parmArr = preg_split("/[\s]+/",strtolower(ltrim(str_replace("\r\n","  ",$create_sql))));
 		if(preg_match('/create\s*index/',$create_sql)){
 			echo "<big><font color=\"#FF0000\">警告！不支持create index语法，请更改为alter table add index语法。</font></big></br>";
@@ -379,7 +379,7 @@ class sqlRulesClass{
 	}
 	
 	function alterRules($alter_sql){
-		echo "当前SQL语句是：".$alter_sql." <br>";
+		$this->showCurrentSql($alter_sql);
 		$dbname = $this->dbname;
 		require 'db_config.php';
 		$parmArr = preg_split("/[\s]+/",ltrim(str_replace("\r\n","  ",$alter_sql)));
@@ -410,6 +410,11 @@ class sqlRulesClass{
 		}
 	}
 	
+	function showCurrentSql($sql){
+		$order   = array("\r\n", "\n", "\r");
+		$replace = '<br />';
+		echo "当前SQL语句是：". str_replace($order,$replace,$sql);
+	}
 
 }
 
