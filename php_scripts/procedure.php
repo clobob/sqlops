@@ -207,7 +207,7 @@ class dataUtil {
 					continue;
 				}
 				#$filter[]=$line;
-				$filtered = $filtered.$line.'\r\n';
+				$filtered = $filtered.$line."\r\n";
 			}
 			fclose($file_handle);	
 		}else{
