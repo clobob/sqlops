@@ -413,7 +413,7 @@ class sqlRulesClass{
 	function showCurrentSql($sql){
 		$order   = array("\r\n", "\n", "\r");
 		$replace = '<br />';
-		echo "当前SQL语句是：". str_replace($order,$replace,$sql)."\r\n";
+		echo "当前SQL语句是：". str_replace($order,$replace,$sql)."<br />";
 	}
 
 }
