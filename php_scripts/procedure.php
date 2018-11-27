@@ -147,6 +147,79 @@ class mysqlProcedures {
 	}
 }
 
+## dataUtil 类 用于去除文件内容中的注释
+#  注释符合包含：
+#  '-- '
+#   '/*...*/'
+class dataUtil {
+	function commentFilter($file_name){
+		$findCloseFlag = false;
+		#$filter = array();
+		$filtered = '';
+		if(file_exists($file_name)){
+			echo "file exists\r\n";
+			$file_handle = fopen($file_name,"r");
+			while (!feof($file_handle)){
+				$line = trim(fgets($file_handle));
+				if($line == '--'){
+					continue;
+				}
+				#-- 注释符处理
+				$findMinus = strpos($line,'-- ');
+				if(!($findMinus===false)){
+					#注释符在行首的情况,整行跳过
+					if($findMinus == 0){
+						continue;
+					}else{
+						$line = substr($line,0,($findMinus - 1));
+					}
+				}
+				#/*...*/注释符处理
+				$findStartStar = strpos($line,'/*');
+				$findEndStar = strpos($line,'*/');
+				if(!($findStartStar===false)){
+					if($findStartStar == 0){
+						#单行注释的处理
+						if($findEndStar>=2){
+							$line = substr($line,$findEndStar+2);
+						}else{
+							#多行注释的处理,设定标志位,跳过本行
+							$findCloseFlag = true;
+							continue;
+						}
+					}
+				}
+				#多行注释处理,查找注释结尾的处理
+				if($findCloseFlag){
+					if($findEndStar === false){
+						#没找到结尾符,整行跳过
+						continue;
+					}else{
+						$findCloseFlag = false; # 多行注释结束,关闭标志位
+						if(strlen(trim($line)) == ($findEndStar+2)){
+							continue;
+						}else{
+							$line = substr($line,$findEndStar+2);
+						}
+					}
+				}
+				if(trim($line)==''){
+					continue;
+				}
+				#$filter[]=$line;
+				$filtered = $filtered.$line.'\r\n';
+			}
+			fclose($file_handle);	
+		}else{
+			echo "no file found\r\n";
+				#$filter[]='Nothing read, input is not a file';
+		}
+		#var_dump($filter);	
+		var_dump($filtered);
+	}
+		
+}
+
 #测试代码1
 function testClass1(){
 $testProcedure1 = "CREATE    		PROCEDURE delbyId\(IN id INT UNSIGNED\) 
@@ -365,7 +438,13 @@ function testClass2(){
 		print_r($actual_output[0]);
 		echo "End testing ................................................................\r\n\r\n";
 }
+
+function testClass3(){
+	$utilObj = new dataUtil();
+	$utilObj->commentFilter("./sqlops/sql/sql_db.sql");
+}
 #测试代码 ，产品中注释该行
 #testClass1();
 #testClass2();
+#testClass3();
 ?>

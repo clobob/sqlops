@@ -16,7 +16,9 @@ if($uploaded){
 }
 
 # 解析文件内容
-$allProceduresObj = new mysqlProcedures($fileoperator->fileName);
+$dataUtilObj = new dataUtil();
+$filteredContent = $dataUtilObj->commentFilter($fileoperator->fileName);
+$allProceduresObj = new mysqlProcedures($filteredContent);
 
 #echo $allProceduresObj->mysqlprocedures."<br>";
 $allProceduresArray = $allProceduresObj->obtainProcedureContent();
