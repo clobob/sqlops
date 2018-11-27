@@ -157,7 +157,7 @@ class dataUtil {
 		#$filter = array();
 		$filtered = '';
 		if(file_exists($file_name)){
-			echo "file exists\r\n";
+			#echo "file exists\r\n";
 			$file_handle = fopen($file_name,"r");
 			while (!feof($file_handle)){
 				$line = trim(fgets($file_handle));
@@ -211,11 +211,12 @@ class dataUtil {
 			}
 			fclose($file_handle);	
 		}else{
-			echo "no file found\r\n";
+			#echo "no file found\r\n";
 				#$filter[]='Nothing read, input is not a file';
 		}
 		#var_dump($filter);	
-		var_dump($filtered);
+		#var_dump($filtered);
+		return $filtered;
 	}
 		
 }
